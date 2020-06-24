@@ -1,5 +1,7 @@
 const toysURL = `http://localhost:3000/toys`
 const toysContainer = document.getElementById('toy-collection')
+const addToyForm = document.querySelector(".container")
+let showToyForm = false
 
 fetch(toysURL)
 .then(r => r.json())
@@ -10,7 +12,6 @@ fetch(toysURL)
 })
 
 function renderToyCard(toy) {
-  console.log(toy)
   let toyCard = document.createElement("div")
   toyCard.classList.add("card")
 
@@ -31,3 +32,15 @@ function renderToyCard(toy) {
   toyCard.append(name, image, likes, likeButton)
   toysContainer.append(toyCard)
 }
+
+let addToyButton = document.getElementById("new-toy-btn")
+
+addToyButton.addEventListener("click", () => {
+  showToyForm = !showToyForm    
+
+  if (showToyForm) {
+    addToyForm.style.display = "block"
+  } else {
+    addToyForm.style.display = "none"
+  }
+})
