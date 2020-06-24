@@ -9,6 +9,8 @@ fetch(toysURL)
   toys.forEach((toy) => {
     renderToyCard(toy)
   })
+  showForm()
+  addNewToy()
 })
 
 function renderToyCard(toy) {
@@ -33,14 +35,42 @@ function renderToyCard(toy) {
   toysContainer.append(toyCard)
 }
 
-let addToyButton = document.getElementById("new-toy-btn")
+function showForm() {
+  let addToyButton = document.getElementById("new-toy-btn")
 
-addToyButton.addEventListener("click", () => {
-  showToyForm = !showToyForm    
+  addToyButton.addEventListener("click", () => {
+    showToyForm = !showToyForm    
 
-  if (showToyForm) {
-    addToyForm.style.display = "block"
-  } else {
-    addToyForm.style.display = "none"
-  }
-})
+    if (showToyForm) {
+      addToyForm.style.display = "block"
+    } else {
+      addToyForm.style.display = "none"
+    }
+  })
+}
+
+function addNewToy() {
+  addToyForm.addEventListener("submit", (event) => {
+    event.preventDefault()
+
+    let nameInput = event.target.name.value 
+    let imageInput = event.target.image.value
+
+    fetch(toysURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: nameInput,
+        image: imageInput,
+        likes: 0
+      })
+    })
+    .then(r => r.json())
+    .then((newToy) => {
+      renderToyCard(newToy)
+      event.target.reset() 
+    })
+  })
+}
