@@ -33,6 +33,23 @@ function renderToyCard(toy) {
 
   toyCard.append(name, image, likes, likeButton)
   toysContainer.append(toyCard)
+
+  likeButton.addEventListener("click", () => {
+    fetch(`http://localhost:3000/toys/${toy.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        likes: toy.likes + 1
+      })
+    })
+    .then(r => r.json())
+    .then((updatedToy) => {
+      toy.likes = updatedToy.likes
+      likes.innerText = `${updatedToy.likes} Likes`
+    })
+  })
 }
 
 function showForm() {
